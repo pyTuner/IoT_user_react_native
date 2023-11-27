@@ -23,7 +23,7 @@ const AuthNavigator = ({ ...props }) => {
       initialRouteName={isOnboardingDisabled ? 'Splash' : 'OnBoarding'}
     >
       <Stack.Screen name='Splash' component={SplashScreen} />
-      <Stack.Screen name='Tab' component={TabsNavigator} />
+      <Stack.Screen name='Home' component={TabsNavigator} />
       <Stack.Screen name='LogIn' component={LogIn} />
       <Stack.Screen name='OnBoarding' component={Onboarding} />
     </Stack.Navigator>

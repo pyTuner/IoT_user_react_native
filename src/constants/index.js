@@ -3,6 +3,7 @@ import { DefaultTheme, DarkTheme } from "@react-navigation/native";
 
 export default {
     asyncStorageKey: "IoTUserApp001",
+    BASE_URL: 'http://192.168.0.148:8000',
     THEME: {
         primary: "#062743",
         secondary: "#182952",
