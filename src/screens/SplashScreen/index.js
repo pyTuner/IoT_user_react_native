@@ -2,9 +2,13 @@ import { View, Text, Image } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useNavigation, useTheme } from '@react-navigation/native';
 import { styles } from './styles';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 
-const SplashScreen = () => {
+const SplashScreen = ({...props}) => {
+
+  const { isLoggedIn, accessToken } = props;
   const [isVisible, setVisibile] = useState(true);
   const navigation = useNavigation();
 
@@ -16,9 +20,10 @@ const SplashScreen = () => {
   }
 
   useEffect(() => {
+    console.log('accessToken in splash:  ', accessToken);
     setTimeout(() => {
       hideSplashScreen();
-      navigation.navigate('LogIn');
+      navigation.navigate(isLoggedIn ? 'Home' : 'LogIn');
     }, 1000);
   }, [])
 
@@ -41,4 +46,23 @@ const SplashScreen = () => {
   )
 }
 
-export default SplashScreen
+SplashScreen.propTypes = {
+  user: PropTypes.object.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
+}
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.auth.user,
+    isLoggedIn: state.auth.isLoggedIn,
+    accessToken: state.auth.accessToken,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps) (SplashScreen);

@@ -1,11 +1,30 @@
 import { View, Text } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
 
-export default Dashboard = () => {
+const Dashboard = ({ ...props }) => {
+
+  useEffect(() => {
+    console.log('Props>>>: ', props);
+  }, []);
   return (
     <View>
-      <Text style={{fontSize:20, fontWeight:800}}>Dashboard</Text>
+      <Text>Dashboard</Text>
     </View>
   )
 }
 
+const mapStateToProps = (state) => {
+  return {
+    user: state.auth.user,
+    isLoggedIn: state.auth.isLoggedIn,
+    accessToken: state.auth.accessToken,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)

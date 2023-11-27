@@ -8,6 +8,9 @@ import * as yup from 'yup';
 import { Formik, Field } from 'formik';
 import { loginUser } from '../../api/Auth'
 import { showSnackBar } from '../../utils/SnackBar';
+import { connect } from 'react-redux';
+import * as authActions from '../../store/actions/authActions';
+import PropTypes from 'prop-types';
 
 
 const signInValidationSchema = yup.object().shape({
@@ -18,8 +21,9 @@ const signInValidationSchema = yup.object().shape({
 
 })
 
-const Login = () => {
+const Login = ({...props}) => {
 
+  const {updateUserLogin, updateUserAccessToken, user, isLoggedIn} = props;
   const navigation = useNavigation();
   const [showSpinner, setShowSpinner] = useState(false);
   const [showPassword, setShowPassword] = useState(true);
@@ -64,7 +68,12 @@ const Login = () => {
                 if (success) {
                   setShowSpinner(false);                  
                   navigation.navigate('Home');
+                  updateUserLogin(res.data, true);
+                  updateUserAccessToken(res.data.token)
                   showSnackBar(res.msg);
+
+                  console.log('user from state: ', user);          
+                  console.log('isLoggedIn status: ', isLoggedIn);             
                 } else {
                   setShowSpinner(false);
                   navigation.navigate('LogIn');
@@ -99,7 +108,7 @@ const Login = () => {
                     <View style={styles(background, text, lightGray5).input} >
 
                       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        {/* <View> */}
+                       <View>
                           <TextInput
                             style={{ height: scale(50), color: text, width:'93%' }}
                             placeholder='Enter Password'
@@ -107,13 +116,14 @@ const Login = () => {
                             name='password'
                             onChangeText={handleChange('password')}
                           />
+                           
                           {
                             (errors.password && touched.password) &&
                             <Text style={{ fontSize: 10, color: 'red', marginTop: scale(5) }}>
                               {errors.password}
                             </Text>
                           }
-                        {/* </View> */}
+                        </View>
                         <TouchableOpacity
                           onPress={() => setShowPassword(prevState => !prevState)}
                           style={{ alignSelf: 'center' }}>
@@ -160,4 +170,22 @@ const Login = () => {
   )
 }
 
-export default Login
+Login.propTypes = {
+  user: PropTypes.object.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
+  updateUserLogin: PropTypes.func.isRequired,
+  updateUserAccessToken: PropTypes.func.isRequired,
+}
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.auth.user,
+    isLoggedIn: state.auth.isLoggedIn
+  }
+}
+
+const mapDispatchToProps = (dispatch) => ({
+  updateUserLogin: (user, isLoggedIn) => dispatch(authActions.updateUserLogin(user, isLoggedIn)),
+  updateUserAccessToken: (token) => dispatch(authActions.updateUserAccessToken(token)),
+})
+export default connect(mapStateToProps, mapDispatchToProps) (Login)
