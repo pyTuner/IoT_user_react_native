@@ -1,6 +1,7 @@
 import { View, Text } from 'react-native'
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
+import DashboardCard from '../../components/DashbaordCard';
 
 const Dashboard = ({ ...props }) => {
 
@@ -8,8 +9,8 @@ const Dashboard = ({ ...props }) => {
     console.log('Props>>>: ', props);
   }, []);
   return (
-    <View>
-      <Text>Dashboard</Text>
+    <View style={{alignItems:'center'}}>
+      <DashboardCard />
     </View>
   )
 }
