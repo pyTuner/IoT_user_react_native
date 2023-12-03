@@ -1,6 +1,6 @@
 import { persistCombineReducers } from 'redux-persist';
 import Constants from '../../constants';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import authReducer from './authReducer';
 
 const config = {
@@ -18,4 +18,4 @@ const rootReducer = (state, action) => {
 }
 
 
-export default rootReducer;
+export default rootReducer; 

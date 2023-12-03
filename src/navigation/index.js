@@ -10,8 +10,8 @@ const { MyDarkTheme, MyLightTheme, BASE_URL } = Constants;
 const RootNavigation = () => {
   // whenever AuthNavigation is called, the baseURL is set to axios.default   
   const setUrlConfig = () => {
-    console.log(`called setUrlConfig`, BASE_URL);
-    axios.defaults.baseURL = BASE_URL;      // set default baseURL
+    // console.log(`called setUrlConfig`, BASE_URL);
+    // axios.defaults.baseURL = BASE_URL;      // set default baseURL
   };
 
   useEffect(() => {

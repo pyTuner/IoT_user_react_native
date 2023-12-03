@@ -1,9 +1,21 @@
 import { View, Text } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { styles } from './styles'
 import { scale } from 'react-native-size-matters';
+import { doGetParam } from '../../api/services/APIServices';
+import { API_SIGNATURE } from '../../api/constants/APIConstants';
+
+
+const getStatus = async() => {
+  const result =  await doGetParam(API_SIGNATURE.DEVICE_STATUS, `companyId=20` )
+  // console.warn('result', result);
+}
 
 const DashboardCard = () => {
+
+  useEffect(() => {
+    getStatus();
+  }, [])
   return (
     <View style={styles().card}>
       <View style={styles().containerIcon}>
@@ -20,11 +32,11 @@ const DashboardCard = () => {
         </View>
         <View style={styles().subContainerB}>
           <View style={styles().subContainerB_Active}>
-            <Text style={{ color: 'green', textAlign: 'start' }}>Active</Text>
+            <Text style={{ color: 'green', textAlign: 'left' }}>Active</Text>
             <Text style={styles().textActiveCount}>4</Text>
           </View>
           <View style={styles().subContainerB_Active}>
-            <Text style={{ color: 'red', textAlign: 'start' }}>Inactive</Text>
+            <Text style={{ color: 'red', textAlign: 'left' }}>Inactive</Text>
             <Text style={styles().textActiveCount}>3</Text>
           </View>
         </View>

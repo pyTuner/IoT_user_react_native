@@ -12,7 +12,7 @@ import PropTypes from 'prop-types';
 
 const AuthNavigator = ({ ...props }) => {
 
-  console.log(`Onboarding status: ${props.isOnboardingDisabled}`);
+  // console.log(`Onboarding status: ${props.isOnboardingDisabled}`);
   const { isOnboardingDisabled } = props;
   const Stack = createNativeStackNavigator()
   return (

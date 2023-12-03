@@ -6,15 +6,17 @@ import Icon from 'react-native-vector-icons/dist/Ionicons';
 import { scale } from 'react-native-size-matters';
 import * as yup from 'yup';
 import { Formik, Field } from 'formik';
-import { loginUser } from '../../api/Auth'
+import { doPost, loginUser } from '../../api/services/APIServices'
 import { showSnackBar } from '../../utils/SnackBar';
 import { connect } from 'react-redux';
 import * as authActions from '../../store/actions/authActions';
 import PropTypes from 'prop-types';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { API_SIGNATURE } from '../../api/constants/APIConstants';
 
 
 const signInValidationSchema = yup.object().shape({
-  email: yup.string()
+  email_id: yup.string()
     .email('Please enter a valid email address')
     .required('Email is required!'),
   password: yup.string().required('Password is required!')
@@ -58,32 +60,36 @@ const Login = ({...props}) => {
         <View style={styles().formContainer}>
           <Formik
             validationSchema={signInValidationSchema}
-            initialValues={{ email: '', password: '' }}
+            initialValues={{ email_id: '', password: '' }}
             onSubmit={async (values) => {
-              // console.log('values', values)
               setShowSpinner(true);
-              loginUser(values).then(res => {
+              try {
+                const res = await doPost(API_SIGNATURE.LOGIN ,values);
                 console.log(res.data.success);
                 const success = res.data.success;
+            
                 if (success) {
-                  setShowSpinner(false);                  
+                  setShowSpinner(false);
                   navigation.navigate('Home');
                   updateUserLogin(res.data, true);
-                  updateUserAccessToken(res.data.token)
+                  updateUserAccessToken(res.data.token);
+            
+                  // Use AsyncStorage.setItem inside try block
+                  await AsyncStorage.setItem('token', res.data.token);
                   showSnackBar(res.msg);
-
-                  console.log('user from state: ', user);          
-                  console.log('isLoggedIn status: ', isLoggedIn);             
+            
+                  // console.log('user from state: ', user);          
+                  // console.log('isLoggedIn status: ', isLoggedIn);             
                 } else {
                   setShowSpinner(false);
                   navigation.navigate('LogIn');
-                  showSnackBar(res.msg, 'ERROR')
+                  showSnackBar(res.msg, 'ERROR');
                 }
-              }).catch(err => {
+              } catch (err) {
                 console.log(err);
                 setShowSpinner(false);
-                showSnackBar('Something went wrong', 'ERROR')
-              })
+                showSnackBar('Something went wrong', 'ERROR');
+              }
             }}>
             {({ handleSubmit, isValid, values, errors, handleChange, touched }) => (
               <>
@@ -93,13 +99,13 @@ const Login = ({...props}) => {
                       style={styles(background, text, lightGray5).input}
                       placeholder='Enter Email'
                       keyboardType='email-address'
-                      name='email'
-                      onChangeText={handleChange('email')}
+                      name='email_id'
+                      onChangeText={handleChange('email_id')}
                     />
                     {
-                      (errors.email && touched.email) &&
+                      (errors.email_id && touched.email_id) &&
                       <Text style={{ fontSize: 10, color: 'red', marginTop: scale(5) }}>
-                        {errors.email}
+                        {errors.email_id}
                       </Text>
                     }
                   </View>

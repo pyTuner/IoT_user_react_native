@@ -5,7 +5,7 @@ export const showSnackBar = (msg, type = 'INFO') => {
     Snackbar.show( {
         text: msg,
         duration: Snackbar.LENGTH_SHORT,
-        backgroundColor: type == 'ERROR' ? '#f00' : '#000'
+        backgroundColor: type == 'ERROR' ? '#f00' : '#4caf50'
     });
 };
 

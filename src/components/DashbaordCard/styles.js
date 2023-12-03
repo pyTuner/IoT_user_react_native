@@ -109,7 +109,7 @@ export const styles = () =>
 
         },
         textActiveCount: {
-            textAlign: 'end', 
+            textAlign: 'right', 
             marginRight:'10%' 
         }
 

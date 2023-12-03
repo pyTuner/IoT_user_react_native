@@ -20,7 +20,7 @@ const SplashScreen = ({...props}) => {
   }
 
   useEffect(() => {
-    console.log('accessToken in splash:  ', accessToken);
+    // console.log('accessToken in splash:  ', accessToken);
     setTimeout(() => {
       hideSplashScreen();
       navigation.navigate(isLoggedIn ? 'Home' : 'LogIn');
