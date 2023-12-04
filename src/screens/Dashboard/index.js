@@ -1,35 +1,44 @@
 import { View, Text } from 'react-native'
-import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import DashboardCard from '../../components/DashbaordCard';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { doGetParam } from '../../api/services/APIServices';
+import { API_SIGNATURE } from '../../api/constants/APIConstants';
+import { styles } from './styles';
 
-const Dashboard = ({ ...props }) => {
 
+const Dashboard = ({}) => {
+  const [result, setResult] = useState([]);
+  const companyId = useSelector((store) => store.auth.user.companyId);
+
+  console.warn(`companyId: ${companyId}`);
+  // device status
   useEffect(() => {
-    // console.log('Props>>>: ', props);
-    
+    // console.warn('Props>>>: ', props);
+    const getStatus = async () => {
+      data = await doGetParam(API_SIGNATURE.DEVICE_STATUS, { companyId: companyId });
+      setResult(data.data)
+
+    }
+    getStatus();
+
   }, []);
 
-  
+  console.log('result:', result);
   return (
-    <View style={{ alignItems: 'center' }}>
-      <DashboardCard />
+
+    <View style={styles.main}>
+      {result ? (
+        result?.map((card, index) => (
+          <DashboardCard key={index} card={card} />
+        )
+        )
+
+      ) : <Text style={{ backgroundColor: 'red' }}>Arios</Text>}
     </View>
+
   )
 }
 
-const mapStateToProps = (state) => {
-  return {
-    user: state.auth.user,
-    isLoggedIn: state.auth.isLoggedIn,
-    accessToken: state.auth.accessToken,
-  }
-}
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-
-  }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)
+export default Dashboard;

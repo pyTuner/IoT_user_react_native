@@ -73,6 +73,7 @@ const Login = ({...props}) => {
                   navigation.navigate('Home');
                   updateUserLogin(res.data, true);
                   updateUserAccessToken(res.data.token);
+                  console.warn(`token: ${res.data.token}`);
             
                   // Use AsyncStorage.setItem inside try block
                   await AsyncStorage.setItem('token', res.data.token);

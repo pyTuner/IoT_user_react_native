@@ -45,6 +45,7 @@ async function makeRequest(method, url, body = null, params = null, useRestructu
     const baseURL = useRestructure ? BASE_URL_RESTRUCTURE : BASE_URL;
     console.log(`Request being sent: ${baseURL}${url}`);
     const response = await axios({ method, url: `${baseURL}${url}`, data: body, ...config });
+    // console.warn('res:> ',response);
 
     return response.data;
   } catch (error) {
@@ -65,8 +66,8 @@ export async function doGet(apiSignature) {
   return await makeRequest('get', apiSignature);
 }
 
-export async function doGetParam(apiSignature, param) {
-  return await makeRequest('get', `${apiSignature}${param}`);
+export async function doGetParam(apiSignature, params=null) {
+  return await makeRequest('get', `${apiSignature}`, null, params);
 }
 
 // Functions for restructured URLs
